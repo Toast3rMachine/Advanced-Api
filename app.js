@@ -10,5 +10,6 @@ mongoose.connect('mongodb://localhost:27017/advanced-api-project?retryWrites=tru
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.post("/user/signup", authcontroller.signup);
+app.post("/user/signin", authcontroller.signin);
 
 module.exports = app;

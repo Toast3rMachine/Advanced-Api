@@ -1,5 +1,7 @@
 const User = require('../models/users')
+const config = require("../config/key");
 var bcrypt = require('bcryptjs')
+var jwt = require("jsonwebtoken")
 
 exports.signup = async(req, res) => {
     const userMail = await User.findOne({ email : req.body.email});
@@ -20,4 +22,29 @@ exports.signup = async(req, res) => {
         console.log(err);
         res.status(500).send({ message: "Erreur lors de la création du compte."})
     }
+}
+
+exports.signin = async(req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+
+    if (!passwordIsValid){
+        return res.status(401).send({
+            accessToken: null,
+            message: "Mot de passe incorrect",
+        })
+    }
+    const token = jwt.sign({ id: user._id, firstname: user.firstname },
+        config.secret,
+        {
+            algorithm: 'HS256',
+            allowInsecureKeySizes: true,
+            expiresIn: 3600, // 1 hour
+        }
+    );
+    res.status(200).send({
+        id: user._id,
+        firstname: user.firstname,
+        accessToken: token,
+    });
 }

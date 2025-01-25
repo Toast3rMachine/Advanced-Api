@@ -42,9 +42,18 @@ exports.signin = async(req, res) => {
             expiresIn: 3600, // 1 hour
         }
     );
+    res.cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+    })
     res.status(200).send({
         id: user._id,
         firstname: user.firstname,
         accessToken: token,
     });
+}
+
+exports.signout = async(req, res) => {
+    res.clearCookie("access_token");
+    res.status(200).send({ message : "Utilisateur déconnecté avec succès."})
 }

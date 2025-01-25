@@ -15,6 +15,8 @@ mongoose.connect('mongodb://localhost:27017/advanced-api-project?retryWrites=tru
 app.post("/user/signup", authcontroller.signup);
 app.post("/user/signin", authcontroller.signin);
 
+app.get("/announcement/list", [authJwt.verifyToken, authJwt.isExist, announcementcontroller.getList])
+app.get("/announcement/details/:id", [authJwt.verifyToken, authJwt.isExist, announcementcontroller.getDetails])
 app.post("/announcement/create", [authJwt.verifyToken, authJwt.isExist, announcementcontroller.create]);
 app.put("/announcement/update/:id", [authJwt.verifyToken, authJwt.isExist, announcementcontroller.update]);
 app.delete("/announcement/delete/:id", [authJwt.verifyToken, authJwt.isExist, announcementcontroller.delete]);

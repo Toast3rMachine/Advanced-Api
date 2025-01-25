@@ -9,12 +9,40 @@ exports.create = async(req, res) => {
     });
     try {
         await announcement.save();
-        res.status(200).send({ message: "Annonce créée avec succés."});
+        res.status(201).send({ message: "Annonce créée avec succés."});
     } catch (err) {
         console.log(err);
         res.status(500).send({ message: "Erreur lors de la publication de l'annonce."})
     }
 }
+
+exports.getList = async(req, res) => {
+    try {
+        const announcements = await Announcement.find();
+        res.status(200).json(announcements)
+    } catch (err) {
+        res.status(500).send('Impossible de récupérer la liste des annnonces.')
+    }
+}
+
+exports.getDetails = async(req, res) => {
+    try {
+        const announcement = await Announcement.findById(req.params.id);
+        if (!announcement) {
+            return res.status(404).send('Impossible de trouver l\'annonce.');
+        }
+        const announcementJson = JSON.stringify(announcement);
+        const hash = etag(announcementJson);
+        if (req.headers['if-none-match'] === hash) {
+            return res.status(304).send('L\'annonce n\' pas été modifié');
+        }
+        res.setHeader('ETag', hash);
+        res.status(200).json(announcement);
+    } catch (err) {
+        res.status(500).send('Impossible de récupérer les détails de l\'annonce')
+    }
+}
+
 
 exports.update = async(req, res) => {
     const announcement = await Announcement.findById(req.params.id);

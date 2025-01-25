@@ -2,24 +2,6 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/key.js");
 const User = require("../models/users.js");
 
-verifyToken = (req, res, next) => {
-    const token = req.headers["access-token"];
-
-    if (!token) {
-    return res.status(403).send({ message: "Aucun Token donné" });
-    }
-
-    jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-        return res.status(401).send({
-        message: "Non autorisé",
-        });
-    }
-    req.userId = decoded.id;
-    next();
-    });
-};
-
 isExist = async (req, res, next) => {
     const user = await User.findById(req.userId);
     if (!user) {
@@ -27,6 +9,21 @@ isExist = async (req, res, next) => {
         return;
     }
     next();
+};
+
+verifyToken = (req, res, next) => {
+    const token = req.cookies.access_token
+
+    if (!token) {
+        return res.status(403).send({ message: "Veuillez vous connecter afin d'effectuer cette action." });
+    }
+    try {
+        const decoded = jwt.verify(token, config.secret);
+        req.userId = decoded.id;
+        next();
+    } catch (err) {
+        return res.status(403).send({ message: "Une erreur est survenue. Impossible de vous authentifier." });
+    }
 };
 
 const authJwt = {

@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "0bc0256f-b658-4cdf-849e-364a140de876",
+		"name": "Projet API Avancée",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36372885"
+	},
+	"item": [
+		{
+			"name": "Requête Compte",
+			"item": [
+				{
+					"name": "Creation Compte",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Unknow\",\r\n    \"lastname\": \"Unknow\",\r\n    \"email\": \"unknow.unknow@test.fr\",\r\n    \"password\": \"Unknow\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Connexion Compte",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"unknow.unknow@test.fr\",\r\n    \"password\" : \"Unknow\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Déconnexion Compte",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/signout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"signout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Dossier contenant toutes les requêtes en lien avec le compte de l'utilisateur.  \nIntéraction possible :\n\n- Créer un compte\n    \n- Se connecter à un compte\n    \n- Se déconnecter d'un compte"
+		},
+		{
+			"name": "Requête Annonce",
+			"item": [
+				{
+					"name": "Publication Annonce",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NmE5Y2UwNGJmNzk0OTFjZDE4MDRiMyIsImZpcnN0bmFtZSI6IlVua25vdyIsImlhdCI6MTczNzc5NjE1MCwiZXhwIjoxNzM3Nzk5NzUwfQ.PEwwZGKNRa77uBXXwzjOe5l8bIp2cWSR9MXLpwLZMcM",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"I always come back.\",\r\n    \"description\": \"Je ne meurs jamais.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/announcement/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"announcement",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Récupération Liste Annonce",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NmE5Y2UwNGJmNzk0OTFjZDE4MDRiMyIsImZpcnN0bmFtZSI6IlVua25vdyIsImlhdCI6MTczNzgwNTUyMSwiZXhwIjoxNzM3ODA5MTIxfQ.QZ6G_33AFXL_5itAJJqlEvg0x3opeNFlzKfbi_lAJ4g",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/announcement/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"announcement",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Récupération Détails Annonce",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk2Yzg3NjU2OWFkMmE0ZGI0NWNlOCIsImZpcnN0bmFtZSI6IldpbGxpYW0iLCJpYXQiOjE3Mzc4MDA1NDQsImV4cCI6MTczNzgwNDE0NH0.yv8NPDhXCNzNQDdNr8LyF-3AAUrNrznVXjOP41wHYBo",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/announcement/details/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"announcement",
+								"details",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modification Annonce",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk2Yzg3NjU2OWFkMmE0ZGI0NWNlOCIsImZpcnN0bmFtZSI6IldpbGxpYW0iLCJpYXQiOjE3Mzc4MDA1NDQsImV4cCI6MTczNzgwNDE0NH0.yv8NPDhXCNzNQDdNr8LyF-3AAUrNrznVXjOP41wHYBo",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "if-match",
+								"value": "\"etag\"",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Peut-être que je suis William Afton.. Qui sait ?\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/announcement/update/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"announcement",
+								"update",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Suppression Annonce",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NmE5Y2UwNGJmNzk0OTFjZDE4MDRiMyIsImZpcnN0bmFtZSI6IlVua25vdyIsImlhdCI6MTczNzIwMTM0MywiZXhwIjoxNzM3MjA0OTQzfQ.vGoPovDE9LfkLAA7GUTmtMIOpNQr5vURKrDbtpj3c1Y",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/announcement/delete/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"announcement",
+								"delete",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Dossier contenant toutes les requêtes en lien avec les annonces que peuvent créer les utilisateur.  \nIntéraction possible :\n\n- Créer une annonce\n    \n- Récupérer la liste des annonces que l'utilisateur a créée\n    \n- Voir les détails d'une annonce que l'utilsateur a créée\n    \n- Modifier une annonce\n    \n- Supprimer une annonce"
+		}
+	]
+}

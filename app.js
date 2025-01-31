@@ -1,11 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser')
-const authcontroller = require('./controllers/authcontroller');
+const { signup, signin, signout, router: authRoutes } = require("./controllers/authcontroller");
 const announcementcontroller = require('./controllers/announcementcontroller');
 const app = express();
 const authJwt = require('./middlewares/authJwt');
 const rateLimiter = require('./middlewares/rateLimiter')
+const passport = require("./config/passport");
+
+app.use(passport.initialize());
 
 app.use(cookieParser());
 app.use(express.json());
@@ -16,9 +19,9 @@ mongoose.connect('mongodb://localhost:27017/advanced-api-project?retryWrites=tru
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 //Routes Utilisateur
-app.post("/user/signup", authcontroller.signup);
-app.post("/user/signin", authcontroller.signin);
-app.post("/user/signout", [authJwt.verifyToken, authJwt.isExist, authcontroller.signout]);
+app.post("/user/signup", signup);
+app.post("/user/signin", signin);
+app.post("/user/signout", [authJwt.verifyToken, authJwt.isExist, signout]);
 
 //Routes Annonce
 app.post("/announcement/create", [authJwt.verifyToken, authJwt.isExist, rateLimiter.settingRateLimiter, announcementcontroller.create]);

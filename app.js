@@ -1,15 +1,20 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser')
-const { signup, signin, signout, router: authRoutes } = require("./controllers/authcontroller");
+const authcontroller = require('./controllers/authcontroller')
 const announcementcontroller = require('./controllers/announcementcontroller');
 const app = express();
 const authJwt = require('./middlewares/authJwt');
 const rateLimiter = require('./middlewares/rateLimiter')
-const passport = require("./config/passport");
 
-app.use(passport.initialize());
+var corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true,
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,9 +24,11 @@ mongoose.connect('mongodb://localhost:27017/advanced-api-project?retryWrites=tru
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 //Routes Utilisateur
-app.post("/user/signup", signup);
-app.post("/user/signin", signin);
-app.post("/user/signout", [authJwt.verifyToken, authJwt.isExist, signout]);
+app.post("/user/signup", authcontroller.signup);
+app.post("/user/signin", authcontroller.signin);
+app.post("/user/signout", [authJwt.verifyToken, authJwt.isExist, authcontroller.signout]);
+app.get("/user/me", [authJwt.verifyToken, authJwt.isExist, authcontroller.me])
+app.get("/user/oauth/github", authcontroller.oauth2);
 
 //Routes Annonce
 app.post("/announcement/create", [authJwt.verifyToken, authJwt.isExist, rateLimiter.settingRateLimiter, announcementcontroller.create]);

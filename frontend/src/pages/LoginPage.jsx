@@ -4,39 +4,40 @@ import axios from "axios";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null); // ✅ Ajout d'un état pour stocker l'utilisateur
 
-  const handleOAuthLogin = (provider) => {
-    window.location.href = `http://localhost:3000/auth/${provider}`;
+  const handleOAuthLoginGithub = () => {
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=Ov23li9yK9sMMbZM0WOC&redirect_uri=http://localhost:3000/user/oauth/github`;
   };
 
-  if (
-    
-  )
-//   useEffect(() => {
-//     const checkAuth = async () => {
-//       try {
-//         const response = await axios.get("http://localhost:3000/auth/me", {
-//           withCredentials: true,
-//         });
+  const handleSignOut = async () => {
+    try {
+      await axios.post("http://localhost:3000/user/signout", {
+        withCredentials: true,
+      });
+      console.log(response);
+      window.location.href = "http://localhost:5173"
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/user/me", {
+          withCredentials: true,
+        });
+        if (response.data.id) {
+          setUser(response.data);
+        }
+      } catch (error) {
+        console.log("Utilisateur non authentifié");
+      }
+    };
   
-//         if (response.data.user) {
-//           console.log("Utilisateur connecté :", response.data.user);
-//           setUser(response.data.user);
-  
-//           // ✅ Ne redirige que si tu n'es PAS déjà sur la page d'accueil
-//           if (window.location.pathname === "/login") {
-//             navigate("/");
-//           }
-//         }
-//       } catch (error) {
-//         console.log("Utilisateur non authentifié");
-//       }
-//     };
-  
-//     checkAuth();
-//   }, [navigate]);
+    checkAuth();
+  }, [navigate]);
 
 
 
@@ -47,14 +48,9 @@ export default function LoginPage() {
       {user ? (
         // ✅ Si l'utilisateur est connecté, afficher son avatar et un bouton de déconnexion
         <div className="absolute top-4 right-4 flex items-center gap-3">
-          <img 
-            src={user.avatar} 
-            alt="Avatar" 
-            className="w-10 h-10 rounded-full border border-gray-300 shadow-md" 
-          />
-          <p>{user.firstname || user.email}</p>
+          <p>{user.firstname}</p>
           <button 
-            onClick={() => window.location.href = "http://localhost:3000/auth/logout"}
+            onClick={() => handleSignOut()}
             className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-700"
           >
             Déconnexion
@@ -63,13 +59,7 @@ export default function LoginPage() {
       ) : (
         // ✅ Si l'utilisateur n'est pas connecté, afficher les boutons d'authentification
         <div className="flex flex-col gap-3">
-          <button onClick={() => handleOAuthLogin("google")} disabled={loading} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Connexion avec Google
-          </button>
-          <button onClick={() => handleOAuthLogin("twitter")} disabled={loading} className="bg-blue-400 text-white px-4 py-2 rounded-md">
-            Connexion avec Twitter
-          </button>
-          <button onClick={() => handleOAuthLogin("github")} disabled={loading} className="bg-gray-800 text-white px-4 py-2 rounded-md">
+          <button onClick={() => handleOAuthLoginGithub()} className="bg-gray-800 text-white px-4 py-2 rounded-md">
             Connexion avec GitHub
           </button>
         </div>

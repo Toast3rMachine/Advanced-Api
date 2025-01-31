@@ -14,6 +14,7 @@ isExist = async (req, res, next) => {
 verifyToken = (req, res, next) => {
     const token = req.cookies.access_token
 
+    console.log(token);
     if (!token) {
         return res.status(403).send({ message: "Veuillez vous connecter afin d'effectuer cette action." });
     }
